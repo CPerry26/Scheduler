@@ -108,7 +108,24 @@ public class Scheduler {
 	}
 	
 	public void timeSort(ArrayList<Event> events){
-		
+		int i, j;
+		Event event;
+		String[] times;
+		for(i = 1; i < events.size(); i++){
+			event = events.get(i);
+			j = i;
+			times = event.startTime.split(":");
+			String[] timePrev;
+			timePrev = events.get(i-1).startTime.split(":");
+			int time = Integer.parseInt(times[0]);
+			int timesPrev = Integer.parseInt(timePrev[0]);
+			while (j > 0 && timesPrev > time){
+				events.set(j, events.get(j-1));
+				j--;
+			}
+			events.set(j, event);
+			
+		}
 	}
 
 	class AddEventL implements ActionListener{
