@@ -135,6 +135,27 @@ public class Scheduler {
 			
 		}
 	}
+	
+	public void editEvent(Event event, ArrayList<Event> events, String[] changes){
+		String title = event.title;
+		for(int i = 0; i < events.size(); i++){
+			if(title == events.get(i).title){
+				events.get(i).title.replace(events.get(i).title, changes[0]);
+				events.get(i).startTime.replace(events.get(i).startTime, changes[1]);
+				break;
+			}
+		}
+	}
+	
+	public void deleteEvent(Event event, ArrayList<Event> events){
+		String title = event.title;
+		for(int i = 0; i < events.size(); i++){
+			if(title == events.get(i).title){
+				events.remove(i);
+				break;
+			}
+		}
+	}
 
 	class AddEventL implements ActionListener{
 		private JPanel b;
