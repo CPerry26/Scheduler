@@ -119,6 +119,14 @@ public class Scheduler {
 			timePrev = events.get(i-1).startTime.split(":");
 			int time = Integer.parseInt(times[0]);
 			int timesPrev = Integer.parseInt(timePrev[0]);
+			if(time == timesPrev){
+				int next = Integer.parseInt(times[1]);
+				int nextTime = Integer.parseInt(timePrev[1]);
+				if(next > nextTime){
+					events.set(j, event);
+				}
+				events.set(j, events.get(j-1));
+			}
 			while (j > 0 && timesPrev > time){
 				events.set(j, events.get(j-1));
 				j--;
