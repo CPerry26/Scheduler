@@ -14,6 +14,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Scheduler {
 	public boolean addIsOn = false;
@@ -22,17 +23,15 @@ public class Scheduler {
 	public boolean displayIsOn = false;
 	
 	
-	
+	/**
 	public Scheduler(){
 		JFrame outerFrame = new JFrame("Scheduler v1.0");
-		JLabel title = new JLabel("Scheduler 1.0!", SwingConstants.CENTER);
-		title.setVisible(true);
-		outerFrame.setVisible(true);
 		outerFrame.setLayout(new BorderLayout());
 		outerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		outerFrame.setResizable(true);
+		outerFrame.setSize(1000, 1000);
+		outerFrame.setResizable(false);
 		JPanel buttGrid = new JPanel(new GridLayout(1,4));
-		outerFrame.add(title, BorderLayout.NORTH);
+		
 		
 		JButton add = new JButton("Add Event");
 		JButton edit = new JButton("Edit Event");
@@ -53,14 +52,20 @@ public class Scheduler {
 		editPanel.setVisible(false);
 		deletePanel.setVisible(false);
 		displayPanel.setVisible(false);
-		add.addActionListener(new AddEventL(addPanel));
-		edit.addActionListener(new EditEventL(editPanel));
-		delete.addActionListener(new DeleteEventL(deletePanel));
-		display.addActionListener(new DisplayEventL(displayPanel));
+		//add.addActionListener(new AddEventL(addPanel));
+		//edit.addActionListener(new EditEventL(editPanel));
+		//delete.addActionListener(new DeleteEventL(deletePanel));
+		//display.addActionListener(new DisplayEventL(displayPanel));
 		outerFrame.add(buttGrid, BorderLayout.NORTH);
 		
-		JTextField eventName = new JTextField();
-		JTextField eventDD = new JTextField();
+		JLabel eventLabel = new JLabel("Event name:");
+		JLabel eventTime = new JLabel("Event start time:");
+		JTextField eventName = new JTextField(20);
+		JTextField eventDD = new JTextField(20);
+		eventLabel.setVisible(true);
+		eventTime.setVisible(true);
+		eventName.setVisible(true);
+		eventDD.setVisible(true);
 		
 		JTextField eventNameEdit = new JTextField();
 		JTextField eventDDEdit = new JTextField();
@@ -74,7 +79,9 @@ public class Scheduler {
 		eventNameEdit.setEditable(true);
 		eventDDEdit.setEditable(true);
 		
+		addPanel.add(eventLabel);
 		addPanel.add(eventName);
+		addPanel.add(eventTime);
 		addPanel.add(eventDD);
 		editPanel.add(eventNameEdit);
 		editPanel.add(eventDDEdit);
@@ -83,16 +90,18 @@ public class Scheduler {
 		deletePanel.add(deleteNo);
 		
 		outerFrame.add(addPanel, BorderLayout.CENTER);
+		outerFrame.setVisible(true);
 		//outerFrame.add(editPanel, BorderLayout.CENTER);
 		//outerFrame.add(deletePanel, BorderLayout.CENTER);
 		//outerFrame.add(displayPanel, BorderLayout.CENTER);
 		
 		
 	}
+	**/
 	
-	private ArrayList<Event> eventList = new ArrayList<Event>();
+	private static ArrayList<Event> eventList = new ArrayList<Event>();
 	
-	class Event{
+	static class Event{
 		public String title;
 		public String startTime;
 		
@@ -102,7 +111,7 @@ public class Scheduler {
 		}
 	}
 	
-	public void newEvent(String title, String startTime){
+	public static void newEvent(String title, String startTime){
 		Event newE = new Event(title, startTime);
 		eventList.add(newE);
 	}
@@ -136,21 +145,23 @@ public class Scheduler {
 		}
 	}
 	
-	public void editEvent(Event event, ArrayList<Event> events, String[] changes){
+	public static void editEvent(Event event, ArrayList<Event> events, String[] changes){
 		String title = event.title;
 		for(int i = 0; i < events.size(); i++){
-			if(title == events.get(i).title){
-				events.get(i).title.replace(events.get(i).title, changes[0]);
-				events.get(i).startTime.replace(events.get(i).startTime, changes[1]);
+			if(title.equals(events.get(i).title)){
+				String titleChange = events.get(i).title.replace(events.get(i).title, changes[0]);
+				String timeChange = events.get(i).startTime.replace(events.get(i).startTime, changes[1]);
+				events.get(i).title = titleChange;
+				events.get(i).startTime = timeChange;
 				break;
 			}
 		}
 	}
 	
-	public void deleteEvent(Event event, ArrayList<Event> events){
+	public static void deleteEvent(Event event, ArrayList<Event> events){
 		String title = event.title;
 		for(int i = 0; i < events.size(); i++){
-			if(title == events.get(i).title){
+			if(title.equals(events.get(i).title)){
 				events.remove(i);
 				break;
 			}
@@ -234,8 +245,68 @@ public class Scheduler {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Scheduler schedule = new Scheduler();
+		//Scheduler schedule = new Scheduler();
+		String newEvent = "1";
+		String editEvent = "2";
+		String displayEvent = "3";
+		String deleteEvent = "4";
+		String line = "";
+		String exit = "5";
+		
+		while(true){
+			System.out.println("1. New event\n2. Edit event\n3. Display event\n4. Delete event\n5. Exit\n");
+			Scanner sc = new Scanner(System.in);
+			line = sc.next();
+			if(line.equals(newEvent)){
+				System.out.println("Event title: ");
+				String title = sc.next();
+				System.out.println("Event time: ");
+				String time = sc.next();
+				newEvent(title, time);
+			}
+			if(line.equals(editEvent)){
+				System.out.println("Enter event title: ");
+				String title = sc.next();
+				System.out.println("Enter new title: ");
+				String newTitle = sc.next();
+				System.out.println("Enter new start time: ");
+				String newTime = sc.next();
+				String [] changes = new String[2];
+				changes[0] = newTitle;
+				changes[1] = newTime;
+				for(int i = 0; i < eventList.size(); i++){
+					if(title.equals(eventList.get(i).title)){
+						editEvent(eventList.get(i), eventList, changes);
+						break;
+					}
+				}
+			}
+			if(line.equals(displayEvent)){
+				System.out.println("Enter event title: ");
+				String displayTitle = sc.next();
+				for(int i = 0; i < eventList.size(); i++){
+					if(eventList.get(i).title.equals(displayTitle)){
+						System.out.println("Event name: " + eventList.get(i).title + '\n');
+						System.out.println("Event start time: " + eventList.get(i).startTime + '\n');
+						break;
+					}
+				}
+			}
+			if(line.equals(deleteEvent)){
+				System.out.println("Enter event title: ");
+				String deleteTitle = sc.next();
+				for(int i = 0; i < eventList.size(); i++){
+					if(eventList.get(i).title.equals(deleteTitle)){
+						deleteEvent(eventList.get(i), eventList);
+						break;
+					}
+				}
+			}
+			if(line.equals(exit)){
+				System.exit(0);
+				break;
+			}
+		}
 	}
 
 }
