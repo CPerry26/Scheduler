@@ -98,9 +98,10 @@ public class Scheduler {
 		
 	}
 	**/
-	
+	//Data structure for events
 	private static ArrayList<Event> eventList = new ArrayList<Event>();
 	
+	//Event object
 	static class Event{
 		public String title;
 		public String startTime;
@@ -111,11 +112,13 @@ public class Scheduler {
 		}
 	}
 	
+	//Method to create event and add it to the list
 	public static void newEvent(String title, String startTime){
 		Event newE = new Event(title, startTime);
 		eventList.add(newE);
 	}
 	
+	//Time sort algorithm
 	public void timeSort(ArrayList<Event> events){
 		int i, j;
 		Event event;
@@ -145,6 +148,7 @@ public class Scheduler {
 		}
 	}
 	
+	//Edit event method, replaces title and time.
 	public static void editEvent(Event event, ArrayList<Event> events, String[] changes){
 		String title = event.title;
 		for(int i = 0; i < events.size(); i++){
@@ -158,6 +162,7 @@ public class Scheduler {
 		}
 	}
 	
+	//Removes selected event from the data structure.
 	public static void deleteEvent(Event event, ArrayList<Event> events){
 		String title = event.title;
 		for(int i = 0; i < events.size(); i++){
@@ -168,6 +173,7 @@ public class Scheduler {
 		}
 	}
 
+	//Listener for creating an event in the GUI
 	class AddEventL implements ActionListener{
 		private JPanel b;
 		
@@ -187,6 +193,7 @@ public class Scheduler {
 		
 	}
 
+	//Listener for editing an event in the GUI
 	class EditEventL implements ActionListener{
 		private JPanel ed;
 		
@@ -205,6 +212,7 @@ public class Scheduler {
 		
 	}
 	
+	//Listener for deleting an event in the GUI
 	class DeleteEventL implements ActionListener{
 		private JPanel d;
 		
@@ -223,6 +231,7 @@ public class Scheduler {
 		
 	}
 	
+	//Listener for displaying events in the GUI
 	class DisplayEventL implements ActionListener{
 		private JPanel di;
 		
