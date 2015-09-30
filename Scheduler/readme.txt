@@ -1,3 +1,1 @@
-UPDATE TO REFLECT PROGRESS AND PROGRAM DESCRIPTION.
-
-TEST
+GUI is being implemented however program works through the command line. Simply run the program and enter the number value associated with the options to explore functionality. A user can currently create, edit, display and delete events. In the future I plan to implement an alert system and finish the GUI.
