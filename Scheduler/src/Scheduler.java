@@ -17,12 +17,14 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Scheduler {
+	//boolean vals to detect if panels are already visible
 	public boolean addIsOn = false;
 	public boolean editIsOn = false;
 	public boolean deleteIsOn = false;
 	public boolean displayIsOn = false;
 	
 	
+	//commented out uncompleted GUI
 	/**
 	public Scheduler(){
 		JFrame outerFrame = new JFrame("Scheduler v1.0");
@@ -263,9 +265,11 @@ public class Scheduler {
 		String exit = "5";
 		
 		while(true){
+			//loop for conditional command line input.
 			System.out.println("1. New event\n2. Edit event\n3. Display event\n4. Delete event\n5. Exit\n");
 			Scanner sc = new Scanner(System.in);
 			line = sc.next();
+			//if creating new event
 			if(line.equals(newEvent)){
 				System.out.println("Event title: ");
 				String title = sc.next();
@@ -273,6 +277,7 @@ public class Scheduler {
 				String time = sc.next();
 				newEvent(title, time);
 			}
+			//if editing event
 			if(line.equals(editEvent)){
 				System.out.println("Enter event title: ");
 				String title = sc.next();
@@ -290,6 +295,7 @@ public class Scheduler {
 					}
 				}
 			}
+			//if displaying event
 			if(line.equals(displayEvent)){
 				System.out.println("Enter event title: ");
 				String displayTitle = sc.next();
@@ -301,6 +307,7 @@ public class Scheduler {
 					}
 				}
 			}
+			//if deleting event
 			if(line.equals(deleteEvent)){
 				System.out.println("Enter event title: ");
 				String deleteTitle = sc.next();
@@ -311,6 +318,7 @@ public class Scheduler {
 					}
 				}
 			}
+			//if exiting the program
 			if(line.equals(exit)){
 				System.exit(0);
 				break;
