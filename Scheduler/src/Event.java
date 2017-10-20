@@ -12,8 +12,8 @@ public class Event {
 	/*
 	 * This is the constructor for an event object.
 	 * 
-	 * @args String title - event title
-	 * @args String start_time - event start time
+	 * @param String title - Event title.
+	 * @param String start_time - Event start time.
 	 * 
 	 * @return none
 	 */
@@ -26,7 +26,7 @@ public class Event {
 	/*
 	 * This method gets and returns the event title.
 	 * 
-	 * @args none
+	 * @param none
 	 * 
 	 * @return none
 	 */
@@ -37,7 +37,7 @@ public class Event {
 	/*
 	 * This method gets and returns the event start time.
 	 * 
-	 * @args none
+	 * @param none
 	 * 
 	 * @return none
 	 */
@@ -48,12 +48,48 @@ public class Event {
 	/*
 	 * This method gets and returns the event duration.
 	 * 
-	 * @args none
+	 * @param none
 	 * 
 	 * @return none
 	 */
 	public int get_event_duration() {
 		return event_duration;
+	}
+	
+	/*
+	 * This method alters the event title. It is only used if the current title
+	 * is being changed.
+	 * 
+	 * @param String new_title - The new title of the event.
+	 * 
+	 * @return none
+	 */
+	public void set_event_title(String new_title) {
+		event_title = new_title;
+	}
+	
+	/*
+	 * This method alters the event start time. It is only used if the current
+	 * start time is being changed.
+	 * 
+	 * @param String new_start_time - The new start time of the event.
+	 * 
+	 * @return none
+	 */
+	public void set_event_start_time(String new_start_time) {
+		event_start_time = new_start_time;
+	}
+	
+	/*
+	 * This method alters the event duration. It is only used if the current
+	 * duration is being changed.
+	 * 
+	 * @param int new_duration - The new duration of the event.
+	 * 
+	 * @return none
+	 */
+	public void set_event_duration(int new_duration) {
+		event_duration = new_duration;
 	}
 
 }
