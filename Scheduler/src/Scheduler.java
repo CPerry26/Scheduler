@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
 /*
  * Java scheduling program.
  * Provides the following functionality:
@@ -8,16 +11,6 @@
  * 
  * @author Cody Perry (CPerry26)
  */
-
-
-import javax.swing.*;
-
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Scanner;
-
 public class Scheduler {
 	// List of events
 	private static ArrayList<Event> event_list = new ArrayList<Event>();
@@ -25,63 +18,37 @@ public class Scheduler {
 	/*
 	 * This method creates a new event and adds it to the event list.
 	 * 
-	 * @args String title - title of event
-	 * @args String start_time - starting time of event
-	 * @args int duration - length of event
+	 * @param String title - title of event
+	 * @param String start_time - starting time of event
+	 * @param int duration - length of event
 	 * 
 	 * @return none
 	 */
 	public static void new_event(String title, String start_time, int duration) {
 		Event new_event = new Event(title, start_time, duration);
 		event_list.add(new_event);
-	}
-	
-	//Time sort algorithm
-	public void timeSort(ArrayList<Event> events){
-		int i, j;
-		Event event;
-		String[] times;
-		for(i = 1; i < events.size(); i++){
-			event = events.get(i);
-			j = i;
-			times = event.startTime.split(":");
-			String[] timePrev;
-			timePrev = events.get(i-1).startTime.split(":");
-			int time = Integer.parseInt(times[0]);
-			int timesPrev = Integer.parseInt(timePrev[0]);
-			if(time == timesPrev){
-				int next = Integer.parseInt(times[1]);
-				int nextTime = Integer.parseInt(timePrev[1]);
-				if(next > nextTime){
-					events.set(j, event);
-				}
-				events.set(j, events.get(j-1));
-			}
-			while (j > 0 && timesPrev > time){
-				events.set(j, events.get(j-1));
-				j--;
-			}
-			events.set(j, event);
-			
-		}
+		event_list.sort(new TimeComparator());
 	}
 	
 	/*
 	 * This method edits a given event with a set of changes.
 	 * 
-	 * @args Event event - event to edit
-	 * @args String[] changes - array of changes to make
+	 * @param Event event - event to edit
+	 * @param String[] changes - array of changes to make
 	 * 
 	 * @return none
 	 */
-	public static void editEvent(Event event, String[] changes){
-		String title = event.title;
-		for(int i = 0; i < events.size(); i++){
-			if(title.equals(events.get(i).title)){
-				String titleChange = events.get(i).title.replace(events.get(i).title, changes[0]);
-				String timeChange = events.get(i).startTime.replace(events.get(i).startTime, changes[1]);
-				events.get(i).title = titleChange;
-				events.get(i).startTime = timeChange;
+	public static void edit_event(Event event, String new_title, 
+								String new_start_time, int new_duration) {
+		
+		String title = event.get_event_title();
+		
+		for(int i = 0; i < event_list.size(); i++) {
+			
+			if(title.equals(event_list.get(i).get_event_title())) {
+				event_list.get(i).set_event_title(new_title);
+				event_list.get(i).set_event_start_time(new_start_time);
+				event_list.get(i).set_event_duration(new_duration);
 				break;
 			}
 		}
@@ -90,13 +57,15 @@ public class Scheduler {
 	/*
 	 * This method removes an event from the event list.
 	 * 
-	 * @args Event event - event to delete
+	 * @param Event event - Event to delete
 	 * 
 	 * @return none
 	 */
-	public static void deleteEvent(Event event) {
+	public static void delete_event(Event event) {
+		String title = event.get_event_title();
+		
 		for(int i = 0; i < event_list.size(); i++){
-			if(event.get_event_title().equals(event_list.get(i).get_event_title())) {
+			if(title.equals(event_list.get(i).get_event_title())) {
 				event_list.remove(i);
 				break;
 			}
@@ -104,75 +73,118 @@ public class Scheduler {
 	}
 
 	/**
-	 * @param args
+	 * This is the entry point for the Scheduler application. It handles all
+	 * logic for running the application.
+	 * 
+	 * @param String[] args - Command line arguments.
+	 * 
+	 * @return none
 	 */
 	public static void main(String[] args) {
-		//Scheduler schedule = new Scheduler();
-		String newEvent = "1";
-		String editEvent = "2";
-		String displayEvent = "3";
-		String deleteEvent = "4";
-		String line = "";
-		String exit = "5";
 		
-		while(true){
-			//loop for conditional command line input.
+		while(true) {
+			// Loop indefinitely for command line input unless exit option is
+			// entered.
 			System.out.println("1. New event\n2. Edit event\n3. Display event\n4. Delete event\n5. Exit\n");
-			Scanner sc = new Scanner(System.in);
-			line = sc.next();
-			//if creating new event
-			if(line.equals(newEvent)){
+			Scanner scanner = new Scanner(System.in);
+			String line = scanner.next();
+			System.out.println(line.length());
+			
+			// Creating a new event.
+			if(line.equals("1")) {
 				System.out.println("Event title: ");
-				String title = sc.next();
+				String title = scanner.nextLine();
+				
 				System.out.println("Event time: ");
-				String time = sc.next();
-				newEvent(title, time);
+				String time = scanner.nextLine();
+				
+				System.out.println("Event duration: ");
+				String duration = scanner.next();
+				
+				new_event(title, time, Integer.parseInt(duration));
 			}
-			//if editing event
-			if(line.equals(editEvent)){
+			
+			// Editing an existing event.
+			if(line.equals("2")) {
 				System.out.println("Enter event title: ");
-				String title = sc.next();
+				String title = scanner.next();
+				
 				System.out.println("Enter new title: ");
-				String newTitle = sc.next();
+				String new_title = scanner.next();
+				if (new_title == "N/A") {
+					new_title = title;
+				}
+				
 				System.out.println("Enter new start time: ");
-				String newTime = sc.next();
-				String [] changes = new String[2];
-				changes[0] = newTitle;
-				changes[1] = newTime;
-				for(int i = 0; i < eventList.size(); i++){
-					if(title.equals(eventList.get(i).title)){
-						editEvent(eventList.get(i), eventList, changes);
+				String new_time = scanner.next();
+				
+				System.out.println("Enter new event duration: ");
+				String new_duration = scanner.next();
+				
+				for(int i = 0; i < event_list.size(); i++){
+					if(title.equals(event_list.get(i).get_event_title())) {
+						
+						if (new_time == "N/A") {
+							new_time = event_list.get(i).get_event_start_time();
+						}
+						
+						if (new_duration == "N/A") {
+							new_duration = Integer.toString(
+										event_list.get(i).get_event_duration());
+						}
+						
+						edit_event(event_list.get(i), new_title, 
+								new_time, Integer.parseInt(new_duration));
+						
 						break;
 					}
 				}
 			}
-			//if displaying event
-			if(line.equals(displayEvent)){
+			
+			// Display event(s).
+			if(line.equals("3")) {
+				String display_opts = "Display options: \n1. Display all\n2. ";
+				display_opts += "Display event\n";
+				System.out.println(display_opts);
+				String display_choice = scanner.next();
+				
+				if (display_choice  == "1") {
+					System.out.println(
+							"Total number events: " + event_list.size());
+					
+					for(Event event : event_list) {
+						event.display_event();
+					}
+				} else if (display_choice == "2") {
+					System.out.println("Enter event title: ");
+					String display_title = scanner.next();
+					
+					for(int i = 0; i < event_list.size(); i++){
+						if(event_list.get(i).get_event_title() == display_title) {
+							event_list.get(i).display_event();
+							break;
+						}
+					}
+				}
+			}
+			
+			// Deleting an event.
+			if(line.equals("4")) {
 				System.out.println("Enter event title: ");
-				String displayTitle = sc.next();
-				for(int i = 0; i < eventList.size(); i++){
-					if(eventList.get(i).title.equals(displayTitle)){
-						System.out.println("Event name: " + eventList.get(i).title + '\n');
-						System.out.println("Event start time: " + eventList.get(i).startTime + '\n');
+				String delete_title = scanner.next();
+				
+				for(int i = 0; i < event_list.size(); i++){
+					if(event_list.get(i).get_event_title() == delete_title) {
+						delete_event(event_list.get(i));
 						break;
 					}
 				}
 			}
-			//if deleting event
-			if(line.equals(deleteEvent)){
-				System.out.println("Enter event title: ");
-				String deleteTitle = sc.next();
-				for(int i = 0; i < eventList.size(); i++){
-					if(eventList.get(i).title.equals(deleteTitle)){
-						deleteEvent(eventList.get(i), eventList);
-						break;
-					}
-				}
-			}
-			//if exiting the program
-			if(line.equals(exit)){
+			
+			// Exit the application.
+			if(line.equals("5")) {
+				scanner.close();
 				System.exit(0);
-				break;
 			}
 		}
 	}

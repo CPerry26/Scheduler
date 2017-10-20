@@ -91,5 +91,20 @@ public class Event {
 	public void set_event_duration(int new_duration) {
 		event_duration = new_duration;
 	}
+	
+	/*
+	 * This method handles the actions necessary to display an event. They
+	 * are not unique to any events.
+	 * 
+	 * @param none
+	 * 
+	 * @return none
+	 */
+	public void display_event() {
+		System.out.println("Event title: " + event_title + "\n");
+		System.out.println("Event start time: " + event_start_time + "\n");
+		System.out.println("Event duration: " + event_duration + "\n");
+		System.out.println();
+	}
 
 }
