@@ -30,7 +30,7 @@ public class TimeComparator implements Comparator<Event> {
 		Date second_date = new Date();
 		
 		// Setup date format.
-		DateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		DateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 		
 		// Try to format the dates for comparison.
 		try {

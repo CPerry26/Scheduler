@@ -86,49 +86,48 @@ public class Scheduler {
 			// Loop indefinitely for command line input unless exit option is
 			// entered.
 			System.out.println("1. New event\n2. Edit event\n3. Display event\n4. Delete event\n5. Exit\n");
-			Scanner scanner = new Scanner(System.in);
+			Scanner scanner = new Scanner(System.in).useDelimiter("\\n");
 			String line = scanner.next();
-			System.out.println(line.length());
 			
 			// Creating a new event.
-			if(line.equals("1")) {
+			if(line.trim().equals("1")) {
 				System.out.println("Event title: ");
-				String title = scanner.nextLine();
+				String title = scanner.next().trim();
 				
 				System.out.println("Event time: ");
-				String time = scanner.nextLine();
+				String time = scanner.next().trim();
 				
 				System.out.println("Event duration: ");
-				String duration = scanner.next();
+				String duration = scanner.next().trim();
 				
 				new_event(title, time, Integer.parseInt(duration));
 			}
 			
 			// Editing an existing event.
-			if(line.equals("2")) {
+			if(line.trim().equals("2")) {
 				System.out.println("Enter event title: ");
-				String title = scanner.next();
+				String title = scanner.next().trim();
 				
 				System.out.println("Enter new title: ");
-				String new_title = scanner.next();
-				if (new_title == "N/A") {
+				String new_title = scanner.next().trim();
+				if (new_title.equals("N/A")) {
 					new_title = title;
 				}
 				
 				System.out.println("Enter new start time: ");
-				String new_time = scanner.next();
+				String new_time = scanner.next().trim();
 				
 				System.out.println("Enter new event duration: ");
-				String new_duration = scanner.next();
+				String new_duration = scanner.next().trim();
 				
 				for(int i = 0; i < event_list.size(); i++){
 					if(title.equals(event_list.get(i).get_event_title())) {
 						
-						if (new_time == "N/A") {
+						if (new_time.equals("N/A")) {
 							new_time = event_list.get(i).get_event_start_time();
 						}
 						
-						if (new_duration == "N/A") {
+						if (new_duration.equals("N/A")) {
 							new_duration = Integer.toString(
 										event_list.get(i).get_event_duration());
 						}
@@ -142,25 +141,25 @@ public class Scheduler {
 			}
 			
 			// Display event(s).
-			if(line.equals("3")) {
+			if(line.trim().equals("3")) {
 				String display_opts = "Display options: \n1. Display all\n2. ";
 				display_opts += "Display event\n";
 				System.out.println(display_opts);
-				String display_choice = scanner.next();
+				String display_choice = scanner.next().trim();
 				
-				if (display_choice  == "1") {
+				if (display_choice.equals("1")) {
 					System.out.println(
 							"Total number events: " + event_list.size());
 					
 					for(Event event : event_list) {
 						event.display_event();
 					}
-				} else if (display_choice == "2") {
+				} else if (display_choice.equals("2")) {
 					System.out.println("Enter event title: ");
-					String display_title = scanner.next();
+					String display_title = scanner.next().trim();
 					
 					for(int i = 0; i < event_list.size(); i++){
-						if(event_list.get(i).get_event_title() == display_title) {
+						if(event_list.get(i).get_event_title().equals(display_title)) {
 							event_list.get(i).display_event();
 							break;
 						}
@@ -169,12 +168,12 @@ public class Scheduler {
 			}
 			
 			// Deleting an event.
-			if(line.equals("4")) {
+			if(line.trim().equals("4")) {
 				System.out.println("Enter event title: ");
-				String delete_title = scanner.next();
+				String delete_title = scanner.next().trim();
 				
 				for(int i = 0; i < event_list.size(); i++){
-					if(event_list.get(i).get_event_title() == delete_title) {
+					if(event_list.get(i).get_event_title().equals(delete_title)) {
 						delete_event(event_list.get(i));
 						break;
 					}
@@ -182,7 +181,7 @@ public class Scheduler {
 			}
 			
 			// Exit the application.
-			if(line.equals("5")) {
+			if(line.trim().equals("5")) {
 				scanner.close();
 				System.exit(0);
 			}

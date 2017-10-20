@@ -1,6 +1,6 @@
 /*
  * This class represents a generic event.
- * Getter methods are used to get attributes of the event.
+ * Getter and setter methods are defined to simplify code across all files.
  * @author Cody Perry (CPerry26)
  */
 public class Event {
@@ -103,8 +103,7 @@ public class Event {
 	public void display_event() {
 		System.out.println("Event title: " + event_title + "\n");
 		System.out.println("Event start time: " + event_start_time + "\n");
-		System.out.println("Event duration: " + event_duration + "\n");
-		System.out.println();
+		System.out.println("Event duration: " + event_duration + "\n\n");
 	}
 
 }
