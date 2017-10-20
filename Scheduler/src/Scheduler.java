@@ -1,13 +1,15 @@
-/**
- * Scheduling program with GUI
- * Simple functionality, such as:
- * Add event, edit event, etc.
+/*
+ * Java scheduling program.
+ * Provides the following functionality:
+ * - Add event
+ * - Edit event
+ * - Display event
+ * - Delete event
+ * 
+ * @author Cody Perry (CPerry26)
  */
 
-/**
- * @author Cody Perry
- *
- */
+
 import javax.swing.*;
 
 import java.awt.*;
@@ -17,107 +19,21 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Scheduler {
-	//boolean vals to detect if panels are already visible
-	public boolean addIsOn = false;
-	public boolean editIsOn = false;
-	public boolean deleteIsOn = false;
-	public boolean displayIsOn = false;
+	// List of events
+	private static ArrayList<Event> event_list = new ArrayList<Event>();
 	
-	
-	//commented out uncompleted GUI
-	/**
-	public Scheduler(){
-		JFrame outerFrame = new JFrame("Scheduler v1.0");
-		outerFrame.setLayout(new BorderLayout());
-		outerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		outerFrame.setSize(1000, 1000);
-		outerFrame.setResizable(false);
-		JPanel buttGrid = new JPanel(new GridLayout(1,4));
-		
-		
-		JButton add = new JButton("Add Event");
-		JButton edit = new JButton("Edit Event");
-		JButton delete = new JButton("Delete Event");
-		JButton display = new JButton("Display Event");
-		buttGrid.add(add);
-		buttGrid.add(edit);
-		buttGrid.add(delete);
-		buttGrid.add(display);
-		
-		
-		final JPanel addPanel = new JPanel();
-		final JPanel editPanel = new JPanel();
-		final JPanel deletePanel = new JPanel();
-		final JPanel displayPanel = new JPanel();
-		
-		addPanel.setVisible(true);
-		editPanel.setVisible(false);
-		deletePanel.setVisible(false);
-		displayPanel.setVisible(false);
-		//add.addActionListener(new AddEventL(addPanel));
-		//edit.addActionListener(new EditEventL(editPanel));
-		//delete.addActionListener(new DeleteEventL(deletePanel));
-		//display.addActionListener(new DisplayEventL(displayPanel));
-		outerFrame.add(buttGrid, BorderLayout.NORTH);
-		
-		JLabel eventLabel = new JLabel("Event name:");
-		JLabel eventTime = new JLabel("Event start time:");
-		JTextField eventName = new JTextField(20);
-		JTextField eventDD = new JTextField(20);
-		eventLabel.setVisible(true);
-		eventTime.setVisible(true);
-		eventName.setVisible(true);
-		eventDD.setVisible(true);
-		
-		JTextField eventNameEdit = new JTextField();
-		JTextField eventDDEdit = new JTextField();
-		
-		JLabel deleteConfirm = new JLabel("Are you sure you want to delete this event?");
-		JButton deleteYes = new JButton();
-		JButton deleteNo = new JButton();
-		
-		eventName.setEditable(true);
-		eventDD.setEditable(true);
-		eventNameEdit.setEditable(true);
-		eventDDEdit.setEditable(true);
-		
-		addPanel.add(eventLabel);
-		addPanel.add(eventName);
-		addPanel.add(eventTime);
-		addPanel.add(eventDD);
-		editPanel.add(eventNameEdit);
-		editPanel.add(eventDDEdit);
-		deletePanel.add(deleteConfirm);
-		deletePanel.add(deleteYes);
-		deletePanel.add(deleteNo);
-		
-		outerFrame.add(addPanel, BorderLayout.CENTER);
-		outerFrame.setVisible(true);
-		//outerFrame.add(editPanel, BorderLayout.CENTER);
-		//outerFrame.add(deletePanel, BorderLayout.CENTER);
-		//outerFrame.add(displayPanel, BorderLayout.CENTER);
-		
-		
-	}
-	**/
-	//Data structure for events
-	private static ArrayList<Event> eventList = new ArrayList<Event>();
-	
-	//Event object
-	static class Event{
-		public String title;
-		public String startTime;
-		
-		public Event(String title1, String startTime1){
-			title = title1;
-			startTime = startTime1;
-		}
-	}
-	
-	//Method to create event and add it to the list
-	public static void newEvent(String title, String startTime){
-		Event newE = new Event(title, startTime);
-		eventList.add(newE);
+	/*
+	 * This method creates a new event and adds it to the event list.
+	 * 
+	 * @args String title - title of event
+	 * @args String start_time - starting time of event
+	 * @args int duration - length of event
+	 * 
+	 * @return none
+	 */
+	public static void new_event(String title, String start_time, int duration) {
+		Event new_event = new Event(title, start_time, duration);
+		event_list.add(new_event);
 	}
 	
 	//Time sort algorithm
@@ -150,8 +66,15 @@ public class Scheduler {
 		}
 	}
 	
-	//Edit event method, replaces title and time.
-	public static void editEvent(Event event, ArrayList<Event> events, String[] changes){
+	/*
+	 * This method edits a given event with a set of changes.
+	 * 
+	 * @args Event event - event to edit
+	 * @args String[] changes - array of changes to make
+	 * 
+	 * @return none
+	 */
+	public static void editEvent(Event event, String[] changes){
 		String title = event.title;
 		for(int i = 0; i < events.size(); i++){
 			if(title.equals(events.get(i).title)){
@@ -164,92 +87,20 @@ public class Scheduler {
 		}
 	}
 	
-	//Removes selected event from the data structure.
-	public static void deleteEvent(Event event, ArrayList<Event> events){
-		String title = event.title;
-		for(int i = 0; i < events.size(); i++){
-			if(title.equals(events.get(i).title)){
-				events.remove(i);
+	/*
+	 * This method removes an event from the event list.
+	 * 
+	 * @args Event event - event to delete
+	 * 
+	 * @return none
+	 */
+	public static void deleteEvent(Event event) {
+		for(int i = 0; i < event_list.size(); i++){
+			if(event.get_event_title().equals(event_list.get(i).get_event_title())) {
+				event_list.remove(i);
 				break;
 			}
 		}
-	}
-
-	//Listener for creating an event in the GUI
-	class AddEventL implements ActionListener{
-		private JPanel b;
-		
-		public AddEventL(JPanel a){
-			b = a;
-		}
-		
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if(addIsOn){
-				b.setVisible(false);
-			}
-			else{
-				b.setVisible(true);
-			}
-		}
-		
-	}
-
-	//Listener for editing an event in the GUI
-	class EditEventL implements ActionListener{
-		private JPanel ed;
-		
-		public EditEventL(JPanel c){
-			ed = c;
-		}
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if(editIsOn){
-				ed.setVisible(false);
-			}
-			else{
-				ed.setVisible(true);
-			}
-		}
-		
-	}
-	
-	//Listener for deleting an event in the GUI
-	class DeleteEventL implements ActionListener{
-		private JPanel d;
-		
-		public DeleteEventL(JPanel c){
-			d = c;
-		}
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if(deleteIsOn){
-				d.setVisible(false);
-			}
-			else{
-				d.setVisible(true);
-			}
-		}
-		
-	}
-	
-	//Listener for displaying events in the GUI
-	class DisplayEventL implements ActionListener{
-		private JPanel di;
-		
-		public DisplayEventL(JPanel al){
-			di = al;
-		}
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if(displayIsOn){
-				di.setVisible(false);
-			}
-			else{
-				di.setVisible(true);
-			}
-		}
-		
 	}
 
 	/**
