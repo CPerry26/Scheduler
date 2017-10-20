@@ -38,6 +38,7 @@ public class TimeComparator implements Comparator<Event> {
 			second_date = format.parse(second_event.get_event_start_time());
 		} catch (ParseException e) {
 			e.printStackTrace();
+			System.exit(1);
 		}
 		
 		// Return which occurs earlier.

@@ -101,9 +101,9 @@ public class Event {
 	 * @return none
 	 */
 	public void display_event() {
-		System.out.println("Event title: " + event_title + "\n");
-		System.out.println("Event start time: " + event_start_time + "\n");
-		System.out.println("Event duration: " + event_duration + "\n\n");
+		System.out.println("Event title: " + event_title);
+		System.out.println("Event start time: " + event_start_time);
+		System.out.println("Event duration: " + event_duration + "\n");
 	}
 
 }
